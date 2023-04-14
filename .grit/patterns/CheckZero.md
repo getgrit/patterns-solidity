@@ -12,10 +12,10 @@ language sol
 // Marks the body of a function as "checked"
 pattern CheckedBody($address) = bubble($address) contains or {
     // Directly checks the require
-    `require($address != address(0), $_)`
-    `require($address != address(0))`
-    `require(address(0) != $address, $_)`
-    `require(address(0) != $address)`
+    `require($address != address(0), $_)`,
+    `require($address != address(0))`,
+    `require(address(0) != $address, $_)`,
+    `require(address(0) != $address)`,
 
     // Or look for a function call
     sol_call_expression(function=`$id`, children=contains $address) where {
@@ -28,8 +28,8 @@ pattern CheckedBody($address) = bubble($address) contains or {
 
 # Start by checking all top-level functions
 sol_function_definition(name=$func, children=$children) where {
-    // Look at each address individually (bubble creates a new scope)
-    $children <: not within sol_interface_declaration()
+    // Look at each address individually (bubble creates a new scope),
+    $children <: not within sol_interface_declaration(),
     $children <: contains bubble($children) sol_parameter(name=$address, type=`address`) where {
         !$children <: CheckedBody($address)
     }
