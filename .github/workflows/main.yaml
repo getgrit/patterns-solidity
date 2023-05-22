@@ -2,6 +2,7 @@ name: Run grit patterns test
 
 env:
   OPENAI_API_KEY: invalid-openai-token
+  GRIT_TELEMETRY_DISABLED: 'true'
   
 on:
   push:
